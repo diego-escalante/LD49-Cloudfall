@@ -22,17 +22,13 @@ public class CloudSpawner : MonoBehaviour {
     [SerializeField] private GameObject cloudPrefab;
 
     private float _spawnXDistance; // Precise horizontal distance to spawn right outside of the screen.
-    private Camera cam;
     private float playerJumpHeightHalf;
     private float cloudHeightHalf;
 
-    private void Awake() {
-        cam = Camera.main;
+    private void Start() {
         // Calculation assumes the camera is always at x = 0.
         _spawnXDistance = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, 0)).x + cloudPrefab.transform.localScale.x / 2;
-    }
-
-    private void Start() {
+        
         playerJumpHeightHalf = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().GetJumpHeight() / 2;
         cloudHeightHalf = cloudPrefab.transform.localScale.y / 2;
         
