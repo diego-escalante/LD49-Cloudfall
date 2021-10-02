@@ -1,8 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class CloudMovement : MonoBehaviour {
 
@@ -19,11 +16,13 @@ public class CloudMovement : MonoBehaviour {
     private static PlayerMovement _playerMovement;
     private float edgeX;
     private Coroutine disintegrateCo;
+    private float yMin, yMax;
+    private bool isDisintegrating;
+    private int direction;
 
     private void Awake() {
-        edgeX = transform.position.x * -1;
+        direction = (int)Mathf.Sign(Random.Range(-1, 1));
     }
-
     private void Start() {
         if (!isTransportingPlayer) {
             return;
@@ -64,19 +63,21 @@ public class CloudMovement : MonoBehaviour {
         hit.transform.Translate(moveStep, 0, 0);
             
         // If this is the first time the player is standing on the cloud, start to disintegrate.
-        // (Yo, I just learned about this null-coalescing assignment operator and my mind is blown.)
-        disintegrateCo ??= StartCoroutine(Disintegrate());
-    }
-
-    public void SetSpeed(float newSpeed) {
-        speed = newSpeed;
+        if (!isDisintegrating) {
+            StartCoroutine(Disintegrate());
+            isDisintegrating = true;
+        }
     }
 
     private void LoopIfOutsideScreen() {
         Vector3 pos = transform.position;
-        if ((speed > 0 && pos.x > edgeX) || (speed < 0 && pos.x < edgeX)) {
-            pos.x = edgeX * -1;
-            transform.position = pos;
+        if ((speed > 0 && pos.x > edgeX) || (speed < 0 && pos.x < -edgeX)) {
+            // If the cloud was disintegrating, just delete it.
+            if (isDisintegrating) {
+                Destroy(gameObject);
+            }
+            
+            ResetCloud();
         }
     }
 
@@ -93,5 +94,32 @@ public class CloudMovement : MonoBehaviour {
         }
 
         Destroy(gameObject);
+    }
+
+    public void InitializeCloud(float yMin, float yMax) {
+        // Calculation assumes the camera is always at x = 0.
+        edgeX = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, 0)).x + transform.localScale.x / 2;
+        this.yMin = yMin;
+        this.yMax = yMax;
+        ResetCloud();
+        Vector3 pos = transform.position;
+        pos.x = Random.Range(-edgeX, edgeX); // Start the cloud for the first time at a random horizontal position.
+        transform.position = pos;
+    }
+
+    private void ResetCloud() {
+        // Move the cloud back to the starting point horizontally.
+        Vector3 pos = transform.position;
+        pos.x = speed > 0 ? -edgeX : edgeX;
+        
+        // Wiggle the height of the cloud in its row. Remove this line if it's too unpredictable.
+        pos.y = Random.Range(yMin, yMax);
+        speed = CalculateSpeed(pos.y) * direction;    // Update the speed based on the new height.
+        transform.position = pos;
+    }
+    
+    // linear relationship between height and speed.
+    private float CalculateSpeed(float height) {
+        return (height + 30) / 60f;
     }
 }

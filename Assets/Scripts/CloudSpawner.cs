@@ -20,48 +20,38 @@ using UnityEngine;
 public class CloudSpawner : MonoBehaviour {
 
     [SerializeField] private GameObject cloudPrefab;
-
-    private float _spawnXDistance; // Precise horizontal distance to spawn right outside of the screen.
+    
     private float playerJumpHeightHalf;
     private float cloudHeightHalf;
 
     private void Start() {
-        // Calculation assumes the camera is always at x = 0.
-        _spawnXDistance = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, 0)).x + cloudPrefab.transform.localScale.x / 2;
-        
         playerJumpHeightHalf = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().GetJumpHeight() / 2;
         cloudHeightHalf = cloudPrefab.transform.localScale.y / 2;
         
         // Generate a bunch of clouds, this can be optimized later if needed by only spawning those in view.
-        CloudRow cloudRow;
         for (int i = 1; i <= 100; i++) {
-            cloudRow = calculateCloudRow(i);
-            float height = Random.Range(cloudRow.yMin, cloudRow.yMax);
-            SpawnCloud(height, Mathf.Sign(Random.Range(-1, 1)), calculateSpeed(height));
+            SpawnCloud(CalculateCloudRow(i));
         }
     }
     
-    private CloudRow calculateCloudRow(int row) {
-        var cloudRow = new CloudRow();
-        cloudRow.yMin = playerJumpHeightHalf * (row - 1) + cloudHeightHalf;
-        cloudRow.yMax = playerJumpHeightHalf * row - cloudHeightHalf;
-        return cloudRow;
+    private CloudRow CalculateCloudRow(int row) {
+        return new CloudRow(
+            playerJumpHeightHalf * (row - 1) + cloudHeightHalf,
+            playerJumpHeightHalf * row - cloudHeightHalf);
     }
 
-    private void SpawnCloud(float height, float side, float speed) {
-        Vector3 spawnPos = new Vector3(_spawnXDistance * side, height, 0);
-
-        GameObject newCloud = Instantiate(cloudPrefab, spawnPos, Quaternion.identity);
-        newCloud.GetComponent<CloudMovement>().SetSpeed(speed * side * -1);
-    }
-
-    // linear relationship between height and speed.
-    private float calculateSpeed(float height) {
-        return (height + 5) / 10f;
+    private void SpawnCloud(CloudRow cloudRow) {
+        GameObject newCloud = Instantiate(cloudPrefab);
+        newCloud.GetComponent<CloudMovement>().InitializeCloud(cloudRow.yMin, cloudRow.yMax);
     }
 
     private struct CloudRow {
         public float yMin;
         public float yMax;
+
+        public CloudRow(float yMin, float yMax) {
+            this.yMin = yMin;
+            this.yMax = yMax;
+        }
     }
 }
