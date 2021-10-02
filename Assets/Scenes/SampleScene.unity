@@ -575,7 +575,7 @@ GameObject:
   - component: {fileID: 1603570269}
   - component: {fileID: 1603570268}
   - component: {fileID: 1603570273}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -905,6 +905,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3942221411331028391, guid: 511b25d6acd63a14a96faad2fb509c34, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 251285301162807096, guid: 511b25d6acd63a14a96faad2fb509c34, type: 3}
       propertyPath: m_Name
       value: Cloud

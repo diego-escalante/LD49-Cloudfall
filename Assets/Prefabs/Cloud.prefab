@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 251285301162807101}
   - component: {fileID: 251285301162807098}
   - component: {fileID: 251285301162807099}
+  - component: {fileID: -3942221411331028391}
   m_Layer: 3
   m_Name: Cloud
   m_TagString: Untagged
@@ -105,3 +106,20 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
+--- !u!114 &-3942221411331028391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 251285301162807096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a92bb14d806e6824c86cd0466d52c0df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isTransportingPlayer: 1
+  speed: 0.5
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 64

@@ -165,6 +165,10 @@ public class PlayerMovement : MonoBehaviour {
         // Move the object.
         transform.Translate(collisionInfo.moveVector);
 	}
+
+    public bool IsGrounded() {
+        return collisionInfo.collisionBelow;
+    }
     
     private void UpdateKinematics(){
         gravity = -(2 * jumpHeight) / (timeToJumpApex * timeToJumpApex);
