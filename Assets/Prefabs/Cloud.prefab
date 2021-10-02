@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 251285301162807098}
   - component: {fileID: 251285301162807099}
   - component: {fileID: -3942221411331028391}
+  - component: {fileID: 7708355000786580576}
   m_Layer: 3
   m_Name: Cloud
   m_TagString: Untagged
@@ -124,3 +125,39 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   timeToDisintegrate: 1
+--- !u!114 &7708355000786580576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 251285301162807096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01c0e3a43070cc84c8c06848a1c710c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shiftCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -1
+      outSlope: -1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 0.5
+      inSlope: -1
+      outSlope: -1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

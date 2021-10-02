@@ -20,8 +20,11 @@ public class CloudMovement : MonoBehaviour {
     private bool isDisintegrating;
     private int direction;
 
+    private TimeShifter _timeShifter;
+    
     private void Awake() {
         direction = (int)Mathf.Sign(Random.Range(-1, 1));
+        _timeShifter = GetComponent<TimeShifter>();
     }
     private void Start() {
         if (!isTransportingPlayer) {
@@ -39,7 +42,7 @@ public class CloudMovement : MonoBehaviour {
     private void Update() {
         LoopIfOutsideScreen();
         
-        float moveStep = speed * Time.deltaTime;
+        float moveStep = speed * Time.deltaTime * _timeShifter.GetFactor();
         if (isTransportingPlayer) {
             TransportPlayer(moveStep);
         }
@@ -86,7 +89,7 @@ public class CloudMovement : MonoBehaviour {
         SpriteRenderer rend = GetComponent<SpriteRenderer>();
         Color startingColor = rend.color;
         while (timeToDisintegrate > 0) {
-            timeToDisintegrate -= Time.deltaTime;
+            timeToDisintegrate -= Time.deltaTime * _timeShifter.GetFactor();
             Color c = startingColor;
             c.a = Mathf.Lerp(1, 0, (totalTime-timeToDisintegrate) / totalTime);
             rend.color = c;

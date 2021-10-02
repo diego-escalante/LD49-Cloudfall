@@ -308,7 +308,7 @@ PlayerSettings:
   openGLRequireES31AEP: 0
   openGLRequireES32: 0
   m_TemplateCustomTags:
-    BACKGROUND: '#fff'
+    BACKGROUND: '#000'
     OPTIMIZE_FOR_PIXEL_ART: false
     SCALE_TO_FIT: true
   mobileMTRendering:

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent (typeof (CollisionController))]
+[RequireComponent (typeof (CollisionController), typeof(TimeShifter))]
 public class PlayerMovement : MonoBehaviour {
     
     [Header("Basic Jumping")]
@@ -67,6 +67,8 @@ public class PlayerMovement : MonoBehaviour {
     // Reference to CollisionController and its CollisionInfo struct for collision checking.
     CollisionController collisionController;
     CollisionController.CollisionInfo collisionInfo;
+
+    private TimeShifter _timeShifter;
     
     public void OnValidate() {
         jumpHeight = Mathf.Max(0, jumpHeight);
@@ -83,6 +85,7 @@ public class PlayerMovement : MonoBehaviour {
     }
     
     public void Awake() {
+        _timeShifter = GetComponent<TimeShifter>();
         collisionController = GetComponent<CollisionController>();
         UpdateKinematics();
     }
@@ -91,7 +94,7 @@ public class PlayerMovement : MonoBehaviour {
         bool isDropping = false;
 
         if (coyoteTimeEnabled) {
-            coyoteTimeLeft -= Time.deltaTime;
+            coyoteTimeLeft -= Time.deltaTime * _timeShifter.GetFactor();
             // Get rid of primary jump if no coyote time is left.
             if (jumpsLeft == jumps && coyoteTimeLeft <= 0) {
                 jumpsLeft--;
@@ -105,7 +108,7 @@ public class PlayerMovement : MonoBehaviour {
 
         // Register jump input ahead of time for buffer and use it if applicable, keep track of time since jump input.
         if (jumpBufferTimeLeft >= 0) {
-            jumpBufferTimeLeft -= Time.deltaTime;
+            jumpBufferTimeLeft -= Time.deltaTime /** _timeShifter.GetFactor()*/; //Don't timeshift jumpbuffer.
         }
         if (Input.GetKeyDown(KeyCode.Space)) {
             // Special case: If holding the down arrow while jumping and while grounded, drop instead of jump.
@@ -120,7 +123,7 @@ public class PlayerMovement : MonoBehaviour {
         velocity.x = Input.GetAxisRaw("Horizontal") * runSpeed;
 
         // Calculate vertical movement. (By gravity or by jumping.)
-        velocity.y = Mathf.Clamp(velocity.y + gravity * Time.deltaTime, -terminalVelocity, terminalVelocity);
+        velocity.y = Mathf.Clamp(velocity.y + gravity * Time.deltaTime * _timeShifter.GetFactor(), -terminalVelocity, terminalVelocity);
         if (jumpBufferTimeLeft >= 0 && jumpsLeft > 0) {
             // Regular jumps
             velocity.y = (jumps == jumpsLeft ? maxJumpVelocity : maxMultiJumpVelocity);
@@ -143,7 +146,7 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         // Calculate change in position based on collisions.
-        collisionInfo = collisionController.Check(velocity * Time.deltaTime, isDropping);
+        collisionInfo = collisionController.Check(velocity * Time.deltaTime * _timeShifter.GetFactor(), isDropping);
 
         // React to vertical collisions.
         if (collisionInfo.colliderVertical != null) {
@@ -172,6 +175,10 @@ public class PlayerMovement : MonoBehaviour {
 
     public float GetJumpHeight() {
         return jumpHeight;
+    }
+
+    public float GetJumpsLeft() {
+        return jumpsLeft;
     }
     
     private void UpdateKinematics(){
