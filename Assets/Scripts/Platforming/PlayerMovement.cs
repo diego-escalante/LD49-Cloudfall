@@ -82,7 +82,7 @@ public class PlayerMovement : MonoBehaviour {
         UpdateKinematics();
     }
     
-    public void Start() {
+    public void Awake() {
         collisionController = GetComponent<CollisionController>();
         UpdateKinematics();
     }
@@ -168,6 +168,10 @@ public class PlayerMovement : MonoBehaviour {
 
     public bool IsGrounded() {
         return collisionInfo.collisionBelow;
+    }
+
+    public float GetJumpHeight() {
+        return jumpHeight;
     }
     
     private void UpdateKinematics(){

@@ -17,11 +17,11 @@ public class CloudMovement : MonoBehaviour {
     private Vector2 _boxSize;
 
     private static PlayerMovement _playerMovement;
-    private float destroyX;
+    private float edgeX;
     private Coroutine disintegrateCo;
 
     private void Awake() {
-        destroyX = transform.position.x * -1;
+        edgeX = transform.position.x * -1;
     }
 
     private void Start() {
@@ -38,7 +38,7 @@ public class CloudMovement : MonoBehaviour {
     }
 
     private void Update() {
-        DestroyIfOutsideScreen();
+        LoopIfOutsideScreen();
         
         float moveStep = speed * Time.deltaTime;
         if (isTransportingPlayer) {
@@ -72,9 +72,11 @@ public class CloudMovement : MonoBehaviour {
         speed = newSpeed;
     }
 
-    private void DestroyIfOutsideScreen() {
-        if ((speed > 0 && transform.position.x > destroyX) || (speed < 0 && transform.position.x < destroyX)) {
-            Destroy(gameObject);
+    private void LoopIfOutsideScreen() {
+        Vector3 pos = transform.position;
+        if ((speed > 0 && pos.x > edgeX) || (speed < 0 && pos.x < edgeX)) {
+            pos.x = edgeX * -1;
+            transform.position = pos;
         }
     }
 
