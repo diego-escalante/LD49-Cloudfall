@@ -10,6 +10,10 @@ public class SceneController : MonoBehaviour {
     private void OnDisable() {
         EventManager.StopListening(EventManager.Event.PlayerFell, RestartScene);
     }
+    
+    private void Start() {
+        EventManager.TriggerEvent(EventManager.Event.SceneStart);
+    }
 
     private void RestartScene() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

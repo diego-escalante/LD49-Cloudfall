@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class TimeShiftController : MonoBehaviour {
 
-    [SerializeField] private Image leftBar, rightBar;
+    [SerializeField] private Image[] bars;
     [SerializeField] private float totalDuration = 5f;
     [SerializeField] private float rechargeRate = 0.5f;
     [SerializeField] private float cooldownDuration = 1f;
@@ -63,8 +63,9 @@ public class TimeShiftController : MonoBehaviour {
 
     public void UpdateShifterBar() {
         float currentNormalized = _currentDuration / totalDuration;
-        leftBar.fillAmount = currentNormalized;
-        rightBar.fillAmount = currentNormalized;
+        for (int i = 0; i < bars.Length; i++) {
+            bars[i].fillAmount = currentNormalized;
+        }
     }
     
 }

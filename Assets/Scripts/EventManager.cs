@@ -60,6 +60,7 @@ public class EventManager : MonoBehaviour {
     public enum Event {
         PlayerFell,
         StartTimeShift,
-        StopTimeShift
+        StopTimeShift,
+        SceneStart
     }
 }
