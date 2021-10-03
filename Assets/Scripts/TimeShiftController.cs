@@ -57,8 +57,10 @@ public class TimeShiftController : MonoBehaviour {
         EventManager.TriggerEvent(EventManager.Event.StartTimeShift);
     }
     private void StopShifting() {
-        _isShifting = false;
-        EventManager.TriggerEvent(EventManager.Event.StopTimeShift);
+        if (_isShifting) {
+            _isShifting = false;
+            EventManager.TriggerEvent(EventManager.Event.StopTimeShift);
+        }
     }
 
     public void UpdateShifterBar() {

@@ -61,6 +61,9 @@ public class EventManager : MonoBehaviour {
         PlayerFell,
         StartTimeShift,
         StopTimeShift,
-        SceneStart
+        SceneStart,
+        PlayerJumped,
+        CloudDisintegrated,
+        PlayerFlapped
     }
 }

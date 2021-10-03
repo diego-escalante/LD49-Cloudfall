@@ -130,6 +130,7 @@ public class PlayerMovement : MonoBehaviour {
             jumpsLeft--;
             // Just set the jump timer to negative to "consume" input.
             jumpBufferTimeLeft = -1;
+            EventManager.TriggerEvent(EventManager.Event.PlayerJumped);
         }
         
         // Shortening jumps by releasing space.

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,13 @@ public class BirdAnimation : MonoBehaviour {
         _timeShifter = GetComponent<TimeShifter>();
     }
 
+    private void OnEnable() {
+        EventManager.StartListening(EventManager.Event.PlayerFell, Fell);
+    }
+    private void OnDisable() {
+        EventManager.StopListening(EventManager.Event.PlayerFell, Fell);
+    }
+
     private void Update() {
         _anim.speed = _timeShifter.GetFactor();
         
@@ -30,6 +38,14 @@ public class BirdAnimation : MonoBehaviour {
         } else if (vel.x < 0) {
             _rend.flipX = false;
         }
+    }
+
+    public void Flap() {
+        EventManager.TriggerEvent(EventManager.Event.PlayerFlapped);
+    }
+
+    public void Fell() {
+        gameObject.SetActive(false);
     }
     
 

@@ -6,6 +6,7 @@ public class CameraController : MonoBehaviour {
     private Transform player;
     private Camera cam;
     public SpriteRenderer starField;
+    private bool fell = false;
 
     private void Start() {
         cam = GetComponent<Camera>();
@@ -27,8 +28,9 @@ public class CameraController : MonoBehaviour {
     }
 
     private void CheckIfPlayerFell() {
-        Vector3 topOfPlayer = player.position + new Vector3(0, player.localScale.y / 2f, 0);
-        if (cam.WorldToScreenPoint(topOfPlayer).y < 0) {
+        // Vector3 topOfPlayer = player.position + new Vector3(0, player.localScale.y / 2f, 0);
+        if (cam.WorldToScreenPoint(player.position).y < 0 && !fell) {
+            fell = true;
             EventManager.TriggerEvent(EventManager.Event.PlayerFell);
         }
     }
