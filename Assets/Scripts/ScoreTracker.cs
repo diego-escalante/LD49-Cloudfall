@@ -40,12 +40,12 @@ public class ScoreTracker : MonoBehaviour {
         
         if (height > scoreVal) {
             scoreVal = height;
-            score.text = $"{scoreVal}m";
+            score.text = $"{scoreVal}";
         }
 
         if (height > bestVal) {
             bestVal = height;
-            best.text = $"{bestVal}m";
+            best.text = $"{bestVal}";
         }
     }
 
@@ -57,9 +57,9 @@ public class ScoreTracker : MonoBehaviour {
         Transform parent = GameObject.FindGameObjectWithTag("UI").transform.Find("ScoreTop");
         score = parent.Find("ScoreBundle/Score").GetComponent<TMP_Text>();
         scoreVal = 0;
-        score.text = $"{scoreVal}m";
+        score.text = $"{scoreVal}";
         best = parent.Find("BestBundle/Best").GetComponent<TMP_Text>();
-        best.text = $"{bestVal}m";
+        best.text = $"{bestVal}";
         player = GameObject.FindGameObjectWithTag("Player").transform;
         isUpdating = true;
     }

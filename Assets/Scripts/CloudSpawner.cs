@@ -37,21 +37,24 @@ public class CloudSpawner : MonoBehaviour {
     private CloudRow CalculateCloudRow(int row) {
         return new CloudRow(
             playerJumpHeightHalf * (row - 1) + cloudHeightHalf,
-            playerJumpHeightHalf * row - cloudHeightHalf);
+            playerJumpHeightHalf * row - cloudHeightHalf,
+            row <= 4);
     }
 
     private void SpawnCloud(CloudRow cloudRow) {
         GameObject newCloud = Instantiate(cloudPrefab);
-        newCloud.GetComponent<CloudMovement>().InitializeCloud(cloudRow.yMin, cloudRow.yMax);
+        newCloud.GetComponent<CloudMovement>().InitializeCloud(cloudRow.yMin, cloudRow.yMax, cloudRow.permanent);
     }
 
     private struct CloudRow {
         public float yMin;
         public float yMax;
+        public bool permanent;
 
-        public CloudRow(float yMin, float yMax) {
+        public CloudRow(float yMin, float yMax, bool permanent) {
             this.yMin = yMin;
             this.yMax = yMax;
+            this.permanent = permanent;
         }
     }
 }

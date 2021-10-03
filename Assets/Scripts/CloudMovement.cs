@@ -22,6 +22,7 @@ public class CloudMovement : MonoBehaviour {
 
     private TimeShifter _timeShifter;
     private Animator _animator;
+    private bool isPermanent = false;
     
     private void Awake() {
         direction = (int)Mathf.Sign(Random.Range(-1, 1));
@@ -49,6 +50,11 @@ public class CloudMovement : MonoBehaviour {
             TransportPlayer(moveStep);
         }
         transform.Translate(moveStep, 0, 0);
+
+        if (isPermanent && _playerMovement.transform.position.y > 12f) {
+            StartCoroutine(Disintegrate());
+            isDisintegrating = true;
+        }
     }
 
     /**
@@ -68,7 +74,7 @@ public class CloudMovement : MonoBehaviour {
         hit.transform.Translate(moveStep, 0, 0);
             
         // If this is the first time the player is standing on the cloud, start to disintegrate.
-        if (!isDisintegrating) {
+        if (!isDisintegrating && !isPermanent) {
             StartCoroutine(Disintegrate());
             isDisintegrating = true;
         }
@@ -90,11 +96,12 @@ public class CloudMovement : MonoBehaviour {
         Destroy(gameObject);
     }
 
-    public void InitializeCloud(float yMin, float yMax) {
+    public void InitializeCloud(float yMin, float yMax, bool isPermanent) {
         // Calculation assumes the camera is always at x = 0.
         edgeX = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, 0)).x + transform.localScale.x / 2;
         this.yMin = yMin;
         this.yMax = yMax;
+        this.isPermanent = isPermanent;
         ResetCloud();
         Vector3 pos = transform.position;
         pos.x = Random.Range(-edgeX, edgeX); // Start the cloud for the first time at a random horizontal position.
