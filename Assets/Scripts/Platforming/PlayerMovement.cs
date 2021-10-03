@@ -180,6 +180,10 @@ public class PlayerMovement : MonoBehaviour {
     public float GetJumpsLeft() {
         return jumpsLeft;
     }
+
+    public Vector2 GetVelocity() {
+        return velocity;
+    }
     
     private void UpdateKinematics(){
         gravity = -(2 * jumpHeight) / (timeToJumpApex * timeToJumpApex);

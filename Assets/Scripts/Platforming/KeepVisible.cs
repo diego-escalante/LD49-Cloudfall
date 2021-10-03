@@ -6,16 +6,17 @@ using UnityEngine;
  */
 public class KeepVisible : MonoBehaviour {
     private Camera cam;
+    private float extentX;
 
     private void Start() {
         cam = Camera.main;
+        // The distance from the center of the object to one of its sides.
+        extentX = transform.localScale.x / 2f * GetComponent<BoxCollider2D>().size.x;
     }
 
     public void LateUpdate() {
         Vector3 worldPos = transform.position;
-        // The distance from the center of the object to one of its sides.
-        float extentX = transform.localScale.x / 2f;
-        
+
         // Handle the left.
         Vector2 viewPosLeft = cam.WorldToViewportPoint(worldPos - new Vector3(extentX, 0, 0));
         if (viewPosLeft.x < 0) {
