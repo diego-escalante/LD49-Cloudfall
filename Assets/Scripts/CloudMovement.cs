@@ -21,10 +21,12 @@ public class CloudMovement : MonoBehaviour {
     private int direction;
 
     private TimeShifter _timeShifter;
+    private Animator _animator;
     
     private void Awake() {
         direction = (int)Mathf.Sign(Random.Range(-1, 1));
         _timeShifter = GetComponent<TimeShifter>();
+        _animator = GetComponent<Animator>();
     }
     private void Start() {
         if (!isTransportingPlayer) {
@@ -73,29 +75,18 @@ public class CloudMovement : MonoBehaviour {
     }
 
     private void LoopIfOutsideScreen() {
+        if (isDisintegrating) {
+            return;
+        }
         Vector3 pos = transform.position;
         if ((speed > 0 && pos.x > edgeX) || (speed < 0 && pos.x < -edgeX)) {
-            // If the cloud was disintegrating, just delete it.
-            if (isDisintegrating) {
-                Destroy(gameObject);
-            }
-            
             ResetCloud();
         }
     }
 
     private IEnumerator Disintegrate() {
-        float totalTime = timeToDisintegrate;
-        SpriteRenderer rend = GetComponent<SpriteRenderer>();
-        Color startingColor = rend.color;
-        while (timeToDisintegrate > 0) {
-            timeToDisintegrate -= Time.deltaTime * _timeShifter.GetFactor();
-            Color c = startingColor;
-            c.a = Mathf.Lerp(1, 0, (totalTime-timeToDisintegrate) / totalTime);
-            rend.color = c;
-            yield return null;
-        }
-
+        _animator.SetTrigger("disintegrate");
+        yield return new WaitForSeconds(timeToDisintegrate + 1);
         Destroy(gameObject);
     }
 

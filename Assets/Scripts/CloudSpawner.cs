@@ -29,7 +29,7 @@ public class CloudSpawner : MonoBehaviour {
         cloudHeightHalf = cloudPrefab.transform.localScale.y / 2;
         
         // Generate a bunch of clouds, this can be optimized later if needed by only spawning those in view.
-        for (int i = 1; i <= 100; i++) {
+        for (int i = 2; i <= 200; i++) {
             SpawnCloud(CalculateCloudRow(i));
         }
     }
