@@ -8,7 +8,7 @@
 </p>
 
 ## [Play the game here!](https://diego-escalante.itch.io/cloudfall)
-This game was made in 48 for the Ludum Dare 49 jam. The theme of the jam was "unstable." It was made with Unity. 
+This game was made in 48 for the Ludum Dare 49 jam in October 2021. The theme of the jam was "unstable." It was made with Unity. 
 
 ## Links
 * [Cloudfall on itch.io](https://diego-escalante.itch.io/cloudfall): Play the game directly on your browser here.
